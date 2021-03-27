@@ -5,6 +5,7 @@ from redvid import Downloader
 from Google import Create_Service
 from googleapiclient.http import MediaFileUpload
 
+glbl_title = ""
 def AutomatedRVS():
     """ Extracting Links & Data From Reddit"""
     page = requests.get("https://www.reddit.com/r/popular/top/.json", headers={'User-agent': 'seventhreetwo'}).json()
@@ -16,6 +17,7 @@ def AutomatedRVS():
     while count < page_dist:
         if((page_data[count]["data"]["is_video"] == True) and (page_data[count]["data"]["media"]["reddit_video"]["duration"] <= 60) and (page_data[count]["data"]["media"]["reddit_video"]["is_gif"] == False)):
             title = page_data[count]["data"]["title"]
+            glbl_title = title
             print(title)
             if (len(title) > 221):
                 title_list = list(title)
@@ -98,4 +100,6 @@ def AutomatedRVS():
     ).execute()
     print(upload_response)
 
-AutomatedRVS()
+def deleteVideo():
+    new_path = "C:\\Users\\john\\Desktop\\.auto_video" + "\\" + glbl_title + ".mp4"
+    os.remove(new_path)

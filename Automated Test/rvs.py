@@ -4,6 +4,7 @@ import os
 from redvid import Downloader
 from Google import Create_Service
 from googleapiclient.http import MediaFileUpload
+from Google import Video_Service
 import time
 
 
@@ -57,7 +58,7 @@ def AutomatedRVS():
     print(auth)
 
     """Downloading Video From Reddit"""
-    path = "C:\\Users\\john\\Desktop\\.auto_video"
+    path = "C:\\Users\\john\\PycharmProjects\\Automated Test\\.auto_video"
     video_title = title + ".mp4"
     video_path = "\\" + video_title
     new_path = path + video_path
@@ -92,64 +93,31 @@ def AutomatedRVS():
         media_body=mediaFile
     ).execute()
     end = time.time()
-    print("The video took "+(end - start)+" seconds to upload.")
+    print(end - start)
+
     """Delete The Video File After Uploading"""
-    """video_id = upload["id"]
+    video_id = upload["id"]
     part_string = "processingDetails"
-    API_NAME2 = "youtube"
     REQUESTSCOPES = ["https://www.googleapis.com/auth/youtube"]
-    request_service = Create_Service(CLIENT_SECRET_FILE, API_NAME2, API_VERSION, REQUESTSCOPES)
+    request_service = Video_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, REQUESTSCOPES)
 
-    upload_response = request_service.videos().list(
+    processingDetails = request_service.videos().list(
         part=part_string,
-        id=video_id
+        id=video_id,
     ).execute()
-    print(upload_response)"""
+    print(processingDetails["items"][0]["processingDetails"]["processingStatus"])
 
-def deleteVideo():
-    """ Extracting Links & Data From Reddit"""
-    page = requests.get("https://www.reddit.com/r/popular/top/.json", headers={'User-agent': 'seventhreetwo'}).json()
-    page_data = page["data"]["children"]
-    page_dist = page["data"]["dist"]
 
-    """Separating Videos From Data"""
-    count = 0
-    while count < page_dist:
-        if ((page_data[count]["data"]["is_video"] == True) and (
-                page_data[count]["data"]["media"]["reddit_video"]["duration"] <= 60) and (
-                page_data[count]["data"]["media"]["reddit_video"]["is_gif"] == False)):
-            title = page_data[count]["data"]["title"]
-            if (len(title) > 100):
-                while (len(title) > 100):
-                    title_list = title.split()
-                    title_list.pop()
-                    title = " ".join(title_list)
-                if ('\"' in title):
-                    title = title.replace('\"', '')
-                if ("/" in title):
-                    title = title.replace("/", "")
-                if (":" in title):
-                    title = title.replace(":", "")
-                if ("*" in title):
-                    title = title.replace("*", "")
-                if ("?" in title):
-                    title = title.replace("*", "")
-                if ('"' in title):
-                    title = title.replace('"', '')
-                if ("<" in title):
-                    title = title.replace("<", "")
-                if (">" in title):
-                    title = title.replace(">", "")
-                if ("|" in title):
-                    title = title.replace("|", "")
+    '''while processingDetails["items"][0]["processingDetails"]["processingStatus"] != "succeeded":
+        processingDetails = request_service.videos().list(
+            part=part_string,
+            id=video_id,
+        ).execute()
+        if processingDetails["items"][0]["processingDetails"]["processingStatus"] == "succeeded":
+            os.remove(new_path)
             break
-        else:
-            count += 1
-    new_path = "C:\\Users\\john\\Desktop\\.auto_video" + "\\" + title + ".mp4"
-    os.remove(new_path)
-    print("Video Deleted.")
-
-
+    print("video has been uploaded and deleted")'''
+AutomatedRVS()
 
 """        if (len(title) > 100):
             title_list = list(title)

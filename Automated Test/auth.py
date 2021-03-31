@@ -1,7 +1,7 @@
 from Google import Create_Service
 from Google import Video_Service
 from pprint import pprint
-import requests
+
 
 CLIENT_SECRET_FILE = "client_secret.json"
 API_NAME = "youtube"
@@ -19,3 +19,5 @@ data = request_service.videos().list(
 ).execute()
 
 pprint(data["items"][0]["processingDetails"]["processingStatus"])
+
+

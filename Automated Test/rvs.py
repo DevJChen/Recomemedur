@@ -7,7 +7,6 @@ from googleapiclient.http import MediaFileUpload
 from Google import Video_Service
 import time
 
-
 def AutomatedRVS():
     start = time.time()
     time.sleep(1)
@@ -92,12 +91,18 @@ def AutomatedRVS():
         body=request_body,
         media_body=mediaFile
     ).execute()
+    video_id = upload["id"]
     end = time.time()
     print(end - start)
+    return new_path, video_id
 
+def DeleteVideo(new_path, video_id):
     """Delete The Video File After Uploading"""
-    video_id = upload["id"]
+
     part_string = "processingDetails"
+    CLIENT_SECRET_FILE = "client_secret.json"
+    API_NAME = "youtube"
+    API_VERSION = "v3"
     REQUESTSCOPES = ["https://www.googleapis.com/auth/youtube"]
     request_service = Video_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, REQUESTSCOPES)
 
@@ -105,19 +110,22 @@ def AutomatedRVS():
         part=part_string,
         id=video_id,
     ).execute()
-    print(processingDetails["items"][0]["processingDetails"]["processingStatus"])
-
-
-    '''while processingDetails["items"][0]["processingDetails"]["processingStatus"] != "succeeded":
-        processingDetails = request_service.videos().list(
-            part=part_string,
-            id=video_id,
-        ).execute()
-        if processingDetails["items"][0]["processingDetails"]["processingStatus"] == "succeeded":
+    if processingDetails["items"][0]["processingDetails"]["processingStatus"] != "succeeded":
+        while processingDetails["items"][0]["processingDetails"]["processingStatus"] != "succeeded":
+            processingDetails = request_service.videos().list(
+                part=part_string,
+                id=video_id,
+            ).execute()
+    print("starting to delete process")
+    while os.path.exists(new_path):
+        try:
             os.remove(new_path)
-            break
-    print("video has been uploaded and deleted")'''
-AutomatedRVS()
+        except:
+            print("trying again")
+    print("video has been uploaded and deleted")
+
+new_path, video_id = AutomatedRVS()
+DeleteVideo(new_path, video_id)
 
 """        if (len(title) > 100):
             title_list = list(title)

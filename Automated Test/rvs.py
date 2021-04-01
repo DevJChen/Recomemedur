@@ -23,8 +23,8 @@ def AutomatedRVS():
                 page_data[count]["data"]["media"]["reddit_video"]["is_gif"] == False)):
             title = page_data[count]["data"]["title"]
             print(title)
-            if (len(title) > 100):
-                while (len(title) > 100):
+            if (len(title) > 92):
+                while (len(title) > 92):
                     title_list = title.split()
                     title_list.pop()
                     title = " ".join(title_list)
@@ -75,7 +75,7 @@ def AutomatedRVS():
     request_body = {
         "snippet": {
             'categoryId': 24,
-            'title': title,
+            'title': title + " #shorts",
             'description': "Like, Comment, Share, Subscribe for more!!! | Creds: " + auth,
             'tags': tags,
         },
@@ -93,6 +93,7 @@ def AutomatedRVS():
     ).execute()
     video_id = upload["id"]
     end = time.time()
+    print("Video: UPLOADED")
     print(end - start)
     return new_path, video_id
 
@@ -116,13 +117,8 @@ def DeleteVideo(new_path, video_id):
                 part=part_string,
                 id=video_id,
             ).execute()
-    print("starting to delete process")
-    while os.path.exists(new_path):
-        try:
-            os.remove(new_path)
-        except:
-            print("trying again")
-    print("video has been uploaded and deleted")
+    os.remove(new_path)
+    print("Video: DELETED")
 
 new_path, video_id = AutomatedRVS()
 DeleteVideo(new_path, video_id)

@@ -57,7 +57,7 @@ def AutomatedRVS():
     print(auth)
 
     """Downloading Video From Reddit"""
-    path = "C:\\Users\\john\\PycharmProjects\\Automated Test\\.auto_video"
+    path = "\\home\\ubuntu\\.auto_video"
     video_title = title + ".mp4"
     video_path = "\\" + video_title
     new_path = path + video_path

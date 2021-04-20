@@ -28,24 +28,24 @@ def AutomatedRVS():
                     title_list = title.split()
                     title_list.pop()
                     title = " ".join(title_list)
-                if ('\"' in title):
-                    title = title.replace('\"', '')
-                if ("/" in title):
-                    title = title.replace("/", "")
-                if (":" in title):
-                    title = title.replace(":", "")
-                if ("*" in title):
-                    title = title.replace("*", "")
-                if ("?" in title):
-                    title = title.replace("*", "")
-                if ('"' in title):
-                    title = title.replace('"', '')
-                if ("<" in title):
-                    title = title.replace("<", "")
-                if (">" in title):
-                    title = title.replace(">", "")
-                if ("|" in title):
-                    title = title.replace("|", "")
+            if ('\"' in title):
+                title = title.replace('\"', '')
+            if ("/" in title):
+                title = title.replace("/", "")
+            if (":" in title):
+                title = title.replace(":", "")
+            if ("*" in title):
+                title = title.replace("*", "")
+            if ("?" in title):
+                title = title.replace("?", "")
+            if ('"' in title):
+                title = title.replace('"', '')
+            if ("<" in title):
+                title = title.replace("<", "")
+            if (">" in title):
+                title = title.replace(">", "")
+            if ("|" in title):
+                title = title.replace("|", "")
             url = page_data[count]["data"]["url"]
             auth = page_data[count]["data"]["author"]
             tags = title.split()

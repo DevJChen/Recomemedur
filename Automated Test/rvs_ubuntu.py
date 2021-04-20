@@ -11,7 +11,7 @@ def AutomatedRVS():
     start = time.time()
     time.sleep(1)
     """ Extracting Links & Data From Reddit"""
-    page = requests.get("https://www.reddit.com/r/popular/top/.json", headers={'User-agent': 'seventhreetwo'}).json()
+    page = requests.get("http://api.scraperapi.com/?api_key=96ee07ba33ed9822bfe8479f6ce14acd&url=https://www.reddit.com/r/popular/top/.json&country_code=jp", headers={'User-agent': 'seventhreetwo'}).json()
     page_data = page["data"]["children"]
     page_dist = page["data"]["dist"]
 
@@ -28,24 +28,24 @@ def AutomatedRVS():
                     title_list = title.split()
                     title_list.pop()
                     title = " ".join(title_list)
-                if ('\"' in title):
-                    title = title.replace('\"', '')
-                if ("/" in title):
-                    title = title.replace("/", "")
-                if (":" in title):
-                    title = title.replace(":", "")
-                if ("*" in title):
-                    title = title.replace("*", "")
-                if ("?" in title):
-                    title = title.replace("*", "")
-                if ('"' in title):
-                    title = title.replace('"', '')
-                if ("<" in title):
-                    title = title.replace("<", "")
-                if (">" in title):
-                    title = title.replace(">", "")
-                if ("|" in title):
-                    title = title.replace("|", "")
+            if ('\"' in title):
+                title = title.replace('\"', '')
+            if ("/" in title):
+                title = title.replace("/", "")
+            if (":" in title):
+                title = title.replace(":", "")
+            if ("*" in title):
+                title = title.replace("*", "")
+            if ("?" in title):
+                title = title.replace("?", "")
+            if ('"' in title):
+                title = title.replace('"', '')
+            if ("<" in title):
+                title = title.replace("<", "")
+            if (">" in title):
+                title = title.replace(">", "")
+            if ("|" in title):
+                title = title.replace("|", "")
             url = page_data[count]["data"]["url"]
             auth = page_data[count]["data"]["author"]
             tags = title.split()

@@ -5,17 +5,18 @@ from redvid import Downloader
 from Google import Create_Service
 from googleapiclient.http import MediaFileUpload
 from Google import Video_Service
+from Google import Comment_Service
 import time
 
 def AutomatedRVS():
     start = time.time()
     time.sleep(1)
-    """ Extracting Links & Data From Reddit"""
+    " Extracting Links & Data From Reddit"
     page = requests.get("https://www.reddit.com/r/popular/top/.json", headers={'User-agent': 'seventhreetwo'}).json()
     page_data = page["data"]["children"]
     page_dist = page["data"]["dist"]
 
-    """Separating Videos From Data"""
+    "Separating Videos From Data"
     count = 0
     while count < page_dist:
         if ((page_data[count]["data"]["is_video"] == True) and (
@@ -49,14 +50,17 @@ def AutomatedRVS():
             url = page_data[count]["data"]["url"]
             auth = page_data[count]["data"]["author"]
             tags = title.split()
+            other_tags = "tiktok,tiktok fans,gf bf tiktok,tiktoks,youtube vs tiktok,new couples tiktok,tiktok couple goals,tiktok memes,tiktok 2021,tiktok funny,tiktok dance,tiktok cringe,best of tiktok,tiktok dances,new tiktok video,si te sabes el tiktok baila,tiktok dance compilation,dj tiktok,funny tiktoks,tiktok mashup"
+            split_tags = other_tags.split(",")
+            combtags = tags + split_tags
             break
         else:
             count += 1
     print(title)
     print(url)
     print(auth)
-
-    """Downloading Video From Reddit"""
+    
+    "Downloading Video From Reddit"
     path = "C:\\Users\\john\\PycharmProjects\\Automated Test\\.auto_video"
     video_title = title + ".mp4"
     video_path = "\\" + video_title
@@ -65,7 +69,7 @@ def AutomatedRVS():
     download.download()
     os.rename(download.file_name, new_path)
 
-    """Uploading Video to Channel With Youtube API"""
+    "Uploading Video to Channel With Youtube API"
     CLIENT_SECRET_FILE = "client_secret.json"
     API_NAME = "youtube"
     API_VERSION = "v3"
@@ -76,8 +80,8 @@ def AutomatedRVS():
         "snippet": {
             'categoryId': 24,
             'title': title,
-            'description': "Like, Comment, Share, Subscribe for more!!! | Creds: " + auth + " #shorts",
-            'tags': tags,
+            'description': "✔️ Like, Comment, Subscribe and Share for more!!! | Creds: " + auth + " #shorts #meme",
+            'tags': title,
         },
         'status': {
             'privacyStatus': 'public',
@@ -98,7 +102,7 @@ def AutomatedRVS():
     return new_path, video_id
 
 def DeleteVideo(new_path, video_id):
-    """Delete The Video File After Uploading"""
+    #"Delete The Video File After Uploading"
 
     part_string = "processingDetails"
     CLIENT_SECRET_FILE = "client_secret.json"
@@ -119,10 +123,33 @@ def DeleteVideo(new_path, video_id):
             ).execute()
     os.unlink(new_path)
     print("Video: DELETED")
+def Comment(video_id):
+    channel_id = "UCKnUNuyEJeoi3XhDwpaJ8nw"
+    CLIENT_SECRET_FILE = "client_secret.json"
+    API_NAME = "youtube"
+    API_VERSION = "v3"
+    REQUESTSCOPES = ["https://www.googleapis.com/auth/youtube.force-ssl"]
+    request_service = Comment_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, REQUESTSCOPES)
+    request_body = {
+        "snippet": {
+            "channelId": channel_id,
+            "topLevelComment": {
+                "snippet": {
+                    "textOriginal": "Hey everyone, thanks for stopping by my channel 👍. If you could drop a subscribe to help get me to 100 subscribers that would mean a lot 💯. I appreciate everyone of yall regardless \n- Recomemedur 😁"
+                }
+            },
+            "videoId": video_id
+        }
+    }
+    comment = request_service.commentThreads().insert(
+        part="snippet",
+        body=request_body
+    ).execute()
+    print("Comment: POSTED")
 
 new_path, video_id = AutomatedRVS()
 DeleteVideo(new_path, video_id)
-
+Comment(video_id)
 """        if (len(title) > 100):
             title_list = list(title)
             while(len(title_list) > 100):

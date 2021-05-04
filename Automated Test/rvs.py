@@ -24,33 +24,14 @@ def AutomatedRVS():
                 page_data[count]["data"]["media"]["reddit_video"]["is_gif"] == False)):
             title = page_data[count]["data"]["title"]
             print(title)
-            if (len(title) > 100):
-                while (len(title) > 100):
-                    title_list = title.split()
-                    title_list.pop()
-                    title = " ".join(title_list)
-            if ('\"' in title):
-                title = title.replace('\"', '')
-            if ("/" in title):
-                title = title.replace("/", "")
-            if (":" in title):
-                title = title.replace(":", "")
-            if ("*" in title):
-                title = title.replace("*", "")
-            if ("?" in title):
-                title = title.replace("?", "")
-            if ('"' in title):
-                title = title.replace('"', '')
-            if ("<" in title):
-                title = title.replace("<", "")
-            if (">" in title):
-                title = title.replace(">", "")
-            if ("|" in title):
-                title = title.replace("|", "")
+            while (len(title) > 100):
+                title_list = title.split()
+                title_list.pop()
+                title = " ".join(title_list)
             url = page_data[count]["data"]["url"]
             auth = page_data[count]["data"]["author"]
             tags = title.split()
-            other_tags = "tiktok,tiktok fans,gf bf tiktok,tiktoks,youtube vs tiktok,new couples tiktok,tiktok couple goals,tiktok memes,tiktok 2021,tiktok funny,tiktok dance,tiktok cringe,best of tiktok,tiktok dances,new tiktok video,si te sabes el tiktok baila,tiktok dance compilation,dj tiktok,funny tiktoks,tiktok mashup"
+            other_tags = "shorts,youtube shorts,short,youtube shorts video,shorts youtube,youtube short,#shorts,youtube shorts 2021,shorts video youtube,yt shorts,viral shorts,tiktok,youtube vs tiktok,tiktok memes,tiktoks,tiktok 2021,tiktok compilation,best of tiktok,tiktok mashup,tiktok dances 2021,tiktok meme,funny fails,funny videos,funny video,funny videos 2021,funny moments,funny fail,new funny comedy video"
             split_tags = other_tags.split(",")
             combtags = tags + split_tags
             break
@@ -62,12 +43,11 @@ def AutomatedRVS():
     
     "Downloading Video From Reddit"
     path = "C:\\Users\\john\\PycharmProjects\\Automated Test\\.auto_video"
-    video_title = title + ".mp4"
-    video_path = "\\" + video_title
-    new_path = path + video_path
     download = Downloader(max_q=True, path=path, url=url)
     download.download()
-    os.rename(download.file_name, new_path)
+    file = os.listdir(path)
+    video = file[0]
+    video_path = path +"\\" + video
 
     "Uploading Video to Channel With Youtube API"
     CLIENT_SECRET_FILE = "client_secret.json"
@@ -78,10 +58,10 @@ def AutomatedRVS():
     upload_service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, UPLOADSCOPES)
     request_body = {
         "snippet": {
-            'categoryId': 24,
+            'categoryId': 23,
             'title': title,
             'description': "✔️ Like, Comment, Subscribe and Share for more!!! | Creds: " + auth + " #shorts #meme",
-            'tags': title,
+            'tags': split_tags,
         },
         'status': {
             'privacyStatus': 'public',
@@ -89,7 +69,7 @@ def AutomatedRVS():
         },
         'notifySubscribers': True,
     }
-    mediaFile = MediaFileUpload(new_path)
+    mediaFile = MediaFileUpload(video_path)
     upload = upload_service.videos().insert(
         part="snippet,status",
         body=request_body,
@@ -99,10 +79,10 @@ def AutomatedRVS():
     end = time.time()
     print("Video: UPLOADED")
     print(end - start)
-    return new_path, video_id
+    return video_path, video_id
 
-def DeleteVideo(new_path, video_id):
-    #"Delete The Video File After Uploading"
+def DeleteVideo(video_path, video_id):
+    "Delete The Video File After Uploading"
 
     part_string = "processingDetails"
     CLIENT_SECRET_FILE = "client_secret.json"
@@ -121,8 +101,9 @@ def DeleteVideo(new_path, video_id):
                 part=part_string,
                 id=video_id,
             ).execute()
-    os.unlink(new_path)
+    os.unlink(video_path)
     print("Video: DELETED")
+
 def Comment(video_id):
     channel_id = "UCKnUNuyEJeoi3XhDwpaJ8nw"
     CLIENT_SECRET_FILE = "client_secret.json"
@@ -135,7 +116,7 @@ def Comment(video_id):
             "channelId": channel_id,
             "topLevelComment": {
                 "snippet": {
-                    "textOriginal": "Hey everyone, thanks for stopping by my channel 👍. If you could drop a subscribe to help get me to 100 subscribers that would mean a lot 💯. I appreciate everyone of yall regardless \n- Recomemedur 😁"
+                    "textOriginal": "Thanks for 100 subs 🥳 mext stop is 500! If you would like to subscribe, that would help a lot 👍 I appreciate the suuport regardless 💯 \n- Recomemedur 😁"
                 }
             },
             "videoId": video_id
@@ -147,8 +128,8 @@ def Comment(video_id):
     ).execute()
     print("Comment: POSTED")
 
-new_path, video_id = AutomatedRVS()
-DeleteVideo(new_path, video_id)
+video_path, video_id = AutomatedRVS()
+DeleteVideo(video_path, video_id)
 Comment(video_id)
 """        if (len(title) > 100):
             title_list = list(title)

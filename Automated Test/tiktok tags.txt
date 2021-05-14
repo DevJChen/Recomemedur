@@ -1,2 +1,3 @@
 shorts,youtube shorts,short,youtube shorts video,shorts youtube,youtube short,#shorts,youtube shorts 2021,shorts video youtube,yt shorts,viral shorts,tiktok,youtube vs tiktok,tiktok memes,tiktoks,tiktok 2021,tiktok compilation,best of tiktok,tiktok mashup,tiktok dances 2021,tiktok meme,funny fails,funny videos,funny video,funny videos 2021,funny moments,funny fail,new funny comedy video
 python -m playwright install
+shorts,youtube shorts,how to make youtube shorts,what is youtube shorts,how to use youtube shorts,youtube shorts video,ytshorts,youtube shorts beta,youtube shorts how to use,youtube shorts tutorial,youtube shorts monetization

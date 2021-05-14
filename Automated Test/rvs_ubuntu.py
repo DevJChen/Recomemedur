@@ -32,7 +32,7 @@ def AutomatedRVS():
             url = page_data[count]["data"]["url"]
             auth = page_data[count]["data"]["author"]
             tags = title.split()
-            other_tags = "shorts,youtube shorts,short,youtube shorts video,shorts youtube,youtube short,#shorts,youtube shorts 2021,shorts video youtube,yt shorts,viral shorts,tiktok,youtube vs tiktok,tiktok memes,tiktoks,tiktok 2021,tiktok compilation,best of tiktok,tiktok mashup,tiktok dances 2021,tiktok meme,funny fails,funny videos,funny video,funny videos 2021,funny moments,funny fail,new funny comedy video"
+            other_tags = "reddit,reddit stories,reddit story,ask reddit,reddit cringe,best of reddit,reddit top posts,funny reddit,best reddit posts,reddit best,sir reddit,reddit jar,reddit ama,storytime with reddit,reddit ask me anything,people of reddit,reddit funny,updoot reddit,reddit stories 2021,reddit compilation,funny reddit stories,reddit cheating,reddit hunt,reddit aita,aita reddit"
             split_tags = other_tags.split(",")
             combtags = tags + split_tags
             break
@@ -73,6 +73,7 @@ def AutomatedRVS():
     mediaFile = MediaFileUpload(video_path)
     upload = upload_service.videos().insert(
         part="snippet,status",
+        notifySubscribers=True,
         body=request_body,
         media_body=mediaFile
     ).execute()
@@ -119,7 +120,7 @@ def Comment(video_id):
             "channelId": channel_id,
             "topLevelComment": {
                 "snippet": {
-                    "textOriginal": "Thanks for 100 subs 🥳 mext stop is 500! If you would like to subscribe, that would help a lot 👍 I appreciate the suuport regardless 💯 \n- Recomemedur 😁"
+                    "textOriginal": "Thanks for 100 subs 🥳 next stop is 500! If you would like to subscribe or drop a like, that would help a lot 👍 I appreciate the support regardless 💯 \n- Recomemedur 😁"
                 }
             },
             "videoId": video_id

@@ -6,50 +6,74 @@ from Google import Create_Service
 from googleapiclient.http import MediaFileUpload
 from Google import Video_Service
 from Google import Comment_Service
+from moviepy.editor import VideoFileClip, concatenate_videoclips
 import time
 
 def AutomatedRVS():
     start = time.time()
     time.sleep(1)
     " Extracting Links & Data From Reddit"
-    page = requests.get("https://www.reddit.com/r/popular/top/.json", headers={'User-agent': 'seventhreetwo'}).json()
+    page = requests.get("https://www.reddit.com/r/Unexpected/top/.json", headers={'User-agent': '0938423897'}).json()
     page_data = page["data"]["children"]
     page_dist = page["data"]["dist"]
 
     "Separating Videos From Data"
     count = 0
+    counter = 0
+    authList = []
+    urlList = []
+    titleList = []
     while count < page_dist:
         if ((page_data[count]["data"]["is_video"] == True) and (
-                page_data[count]["data"]["media"]["reddit_video"]["duration"] <= 60) and (
+                page_data[count]["data"]["media"]["reddit_video"]["duration"] <= 20) and (
                 page_data[count]["data"]["media"]["reddit_video"]["is_gif"] == False)):
             title = page_data[count]["data"]["title"]
-            print(title)
+            if counter == 3:
+                break
             while (len(title) > 100):
                 title_list = title.split()
                 title_list.pop()
                 title = " ".join(title_list)
+            print(title)
             url = page_data[count]["data"]["url"]
             auth = page_data[count]["data"]["author"]
-            tags = title.split(" ")
-            other_tags = "reddit,reddit stories,reddit story,ask reddit,reddit cringe,best of reddit,reddit top posts,funny reddit,best reddit posts,reddit best,sir reddit,reddit jar,reddit ama,storytime with reddit,reddit ask me anything,people of reddit,reddit funny,updoot reddit,reddit stories 2021,reddit compilation,funny reddit stories,reddit cheating,reddit hunt,reddit aita,aita reddit"
-            split_tags = other_tags.split(",")
-            combtags = tags + split_tags
-            print(tags)
-            print(combtags)
-            break
+            print(url)
+            print(auth)
+            titleList.extend(title.split(" "))
+            authList.append(auth)
+            urlList.append(url)
+            counter += 1
+            count += 1
         else:
             count += 1
-    print(title)
-    print(url)
-    print(auth)
-    
+    other_tags = "compilation,shorts,shorts compilation,video compilation,mrbeast compilation,youtube shorts compilation"
+    split_tags = other_tags.split(",")
+    split_tags.extend(titleList)
+    creds = ", ".join(authList)
+
     "Downloading Video From Reddit"
-    path = "C:\\Users\\john\\PycharmProjects\\Automated Test\\.auto_video"
-    download = Downloader(max_q=True, path=path, url=url)
-    download.download()
-    file = os.listdir(path)
-    video = file[0]
-    video_path = path +"\\" + video
+    print(counter)
+    path = "/home/ubuntu/.auto_video"
+    finalvideopath = "/home/ubuntu/.finishedvideo/comp.mp4"
+    for link in urlList:
+        download = Downloader(max_q=True, path=path, url=link)
+        download.download()
+
+    "Creating Compilation Video"
+    pathList = []
+    for file in os.listdir(path):
+        video_path = path +"/" + file
+        vc = VideoFileClip(video_path)
+        pathList.append(vc)
+    print(pathList)
+    final_video = concatenate_videoclips(pathList)
+    final_video.write_videofile(finalvideopath)
+    print("VIDEO: COMPILATED")
+
+    "Delete Video Afterwards"
+    for f in os.listdir(path):
+        file_path = os.path.join(path, f)
+        os.unlink(file_path)
 
     "Uploading Video to Channel With Youtube API"
     CLIENT_SECRET_FILE = "client_secret.json"
@@ -61,8 +85,8 @@ def AutomatedRVS():
     request_body = {
         "snippet": {
             'categoryId': 23,
-            'title': title,
-            'description': "✔️ Like, Comment, Subscribe and Share for more!!! | Creds: " + auth + " #shorts #meme",
+            'title': "Short Shorts Compilation",
+            'description': "✔️ Like, Comment, Subscribe and Share for more!!! | Creds: " + creds + " #shorts #meme",
             'tags': split_tags,
         },
         'status': {
@@ -71,7 +95,7 @@ def AutomatedRVS():
         },
         'notifySubscribers': True,
     }
-    mediaFile = MediaFileUpload(video_path)
+    mediaFile = MediaFileUpload(finalvideopath)
     upload = upload_service.videos().insert(
         part="snippet,status",
         notifySubscribers=True,
@@ -82,7 +106,7 @@ def AutomatedRVS():
     end = time.time()
     print("Video: UPLOADED")
     print(end - start)
-    return video_path, video_id
+    return finalvideopath, video_id
 
 def DeleteVideo(video_path, video_id):
     "Delete The Video File After Uploading"
@@ -119,7 +143,7 @@ def Comment(video_id):
             "channelId": channel_id,
             "topLevelComment": {
                 "snippet": {
-                    "textOriginal": "Thanks for 100 subs 🥳 next stop is 500! If you would like to subscribe or drop a like, that would help a lot 👍 I appreciate the support regardless 💯 \n- Recomemedur 😁"
+                    "textOriginal": "If you would like to subscribe or drop a like, that would help a lot 👍 I appreciate the support regardless 💯 \n- Recomemedur 😁"
                 }
             },
             "videoId": video_id
@@ -131,8 +155,8 @@ def Comment(video_id):
     ).execute()
     print("Comment: POSTED")
 
-video_path, video_id = AutomatedRVS()
-DeleteVideo(video_path, video_id)
+finalvideopath, video_id = AutomatedRVS()
+DeleteVideo(finalvideopath, video_id)
 Comment(video_id)
 """        if (len(title) > 100):
             title_list = list(title)

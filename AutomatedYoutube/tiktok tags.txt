@@ -1,0 +1,8 @@
+shorts,youtube shorts,short,youtube shorts video,shorts youtube,youtube short,#shorts,youtube shorts 2021,shorts video youtube,yt shorts,viral shorts,tiktok,youtube vs tiktok,tiktok memes,tiktoks,tiktok 2021,tiktok compilation,best of tiktok,tiktok mashup,tiktok dances 2021,tiktok meme,funny fails,funny videos,funny video,funny videos 2021,funny moments,funny fail,new funny comedy video
+python -m playwright install
+shorts,youtube shorts,how to make youtube shorts,what is youtube shorts,how to use youtube shorts,youtube shorts video,ytshorts,youtube shorts beta,youtube shorts how to use,youtube shorts tutorial,youtube shorts monetization
+compilation,shorts,shorts compilation,cyanide and happiness shorts,video compilation,mrbeast shorts compilation,tik tok compilation,youtube shorts compilation,cartoon compilation
+compilation,shorts,shorts compilation,video compilation,tik tok compilation,youtube shorts compilation
+tiktok compilation,tik tok compilation,mrbeast shorts compilation,funny tiktok compilation,mrbeast tiktok compilation,tiktok short videos,compilation #1,tiktok mrbeast,youtube shorts,mrbeast shorts,simple invention 7 #shorts,shorts,#shorts,tik tok,youtube shorts 2020,tiktoriki,mrbeast tiktoks,mrbeast tiktok 2020,mrbeast tik tok 2020,mrbeast tik tok,mr beast tik tok,the best of tiktok
+pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+playwright install-deps.

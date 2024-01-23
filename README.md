@@ -15,11 +15,11 @@ This project is an automated pipeline that identifies, downloads, and uploads th
 
 ## Achievements
 
-- **Subscribers**: The channel has organically grown to over 700 subscribers, thanks to the consistent and appealing content.
+- **Subscribers**: The channel has organically grown to over **700** subscribers, thanks to the consistent and appealing content.
 
-- **Views**: Videos uploaded by the project have amassed a total of over 2 million views, a testament to the content's popularity and relevance.
+- **Views**: Videos uploaded by the project have amassed a total of over **2 million views**, a testament to the content's popularity and relevance.
 
-- **Watch Time**: With over 2000 hours of watch time, the content has not just reached a wide audience but also succeeded in retaining their attention.
+- **Watch Time**: With over **2000** hours of watch time, the content has not just reached a wide audience but also succeeded in retaining their attention.
 
 ## Technologies Used
 
